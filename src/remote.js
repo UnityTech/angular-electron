@@ -12,6 +12,7 @@ angular.module('angular-electron').provider('remote', ['$provide', function($pro
     remote = electronRequire('electron').remote;
 
     this.register = registerNodeModule;
+    this.registerAsInstance = registerAsInstance;
 
     angular.forEach(remoteModules, function(remoteModule) {
       registerElectronModule(remoteModule);
@@ -34,6 +35,13 @@ angular.module('angular-electron').provider('remote', ['$provide', function($pro
 
   function usingElectron(){
     return angular.isDefined(electronRequire) && angular.isDefined(electronRequire('electron'));
+  }
+
+  function registerAsInstance(name, _require){
+    _require = _require || name;
+
+    var nodeJsClass = remote.require(_require);
+    $provide.factory(name, function(){ return new nodeJsClass();});
   }
 
   function registerElectronModule(_module) {
