@@ -1,6 +1,6 @@
 {
   "name": "angular-electron",
-  "version": "0.2.2-instantiated-node-modules",
+  "version": "0.2.3",
   "description": "angularjs helpers for electron apps",
   "repository": {
     "type": "git",
