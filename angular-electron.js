@@ -59,8 +59,16 @@ angular.module('angular-electron').provider('remote', ['$provide', function($pro
   function registerAsInstance(name, _require){
     _require = _require || name;
 
-    var nodeJsClass = remote.require(_require);
-    $provide.factory(name, function(){ return new nodeJsClass();});
+    var nodeModule = remote.require(_require);
+
+    if(typeof nodeModule === 'function'){ // it's a constructor function let's instantiate it
+      $provide.factory(name, function(){
+        return new nodeModule();
+      });
+    }
+    else { // it's a instance (something exported like module.exports = new Class())
+      $provide.value(name, nodeModule)
+    }
   }
 
   function registerElectronModule(_module) {
